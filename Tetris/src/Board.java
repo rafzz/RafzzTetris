@@ -137,28 +137,28 @@ public class Board extends javax.swing.JPanel {
                         
                         
                         
-                            if(!pointList.contains(new Point(currentBlock.block1.getPoint().x,currentBlock.block1.getPoint().y))){
+                            if(currentBlock.block1!=null && !pointList.contains(new Point(currentBlock.block1.getPoint().x,currentBlock.block1.getPoint().y))){
                                 pointList.add(new Point(currentBlock.block1.getPoint().x,currentBlock.block1.getPoint().y));
                             }
                         
                         //pointList.add(new Point(currentBlock.block1.getPoint().x,currentBlock.block1.getPoint().y));
                         
                         
-                            if(!pointList.contains(new Point(currentBlock.block2.getPoint().x,currentBlock.block2.getPoint().y))){
+                            if(currentBlock.block2!=null && !pointList.contains(new Point(currentBlock.block2.getPoint().x,currentBlock.block2.getPoint().y))){
                                 pointList.add(new Point(currentBlock.block2.getPoint().x,currentBlock.block2.getPoint().y));
                             }
                         
                         //pointList.add(new Point(currentBlock.block2.getPoint().x,currentBlock.block2.getPoint().y));
                         
                         
-                            if(!pointList.contains(new Point(currentBlock.block3.getPoint().x,currentBlock.block3.getPoint().y))){
+                            if(currentBlock.block3!=null && !pointList.contains(new Point(currentBlock.block3.getPoint().x,currentBlock.block3.getPoint().y))){
                                 pointList.add(new Point(currentBlock.block3.getPoint().x,currentBlock.block3.getPoint().y));
                             }
                         
                         //pointList.add(new Point(currentBlock.block3.getPoint().x,currentBlock.block3.getPoint().y));
                         
                         
-                            if(!pointList.contains(new Point(currentBlock.block4.getPoint().x,currentBlock.block4.getPoint().y))){
+                            if(currentBlock.block4!=null && !pointList.contains(new Point(currentBlock.block4.getPoint().x,currentBlock.block4.getPoint().y))){
                                 pointList.add(new Point(currentBlock.block4.getPoint().x,currentBlock.block4.getPoint().y));
                             }
                         
@@ -310,25 +310,26 @@ public class Board extends javax.swing.JPanel {
                                     //System.out.println("JESTE!!!");
                                     //b.setSuspended();
                                     
-                                    if(b.block1!=null && b.block1.getPoint().y<570){
+                                    if(b.block1!=null ){
                                         
-                                        if(layerCount==1){
+                                        if(layerCount==1&& b.block1.getPoint().y<570){
                                             if(pointList.indexOf(b.block1.getPoint())!=-1){
-                                            pointList.set(pointList.indexOf(b.block1.getPoint()), new Point(b.block1.getPoint().x,b.block1.getPoint().y+30));
+                                            pointList.set(pointList.indexOf(b.block1.getPoint()), 
+                                                    new Point(b.block1.getPoint().x,b.block1.getPoint().y+30));
                                         }
                                         b.block1.getPoint().y+=30;
                                             
-                                        }else if(layerCount==2){
+                                        }else if(layerCount==2&& b.block1.getPoint().y<540){
                                             if(pointList.indexOf(b.block1.getPoint())!=-1){
                                             pointList.set(pointList.indexOf(b.block1.getPoint()), new Point(b.block1.getPoint().x,b.block1.getPoint().y+60));
                                         }
                                         b.block1.getPoint().y+=60;
-                                        }else if(layerCount==3){
+                                        }else if(layerCount==3&& b.block1.getPoint().y<510){
                                             if(pointList.indexOf(b.block1.getPoint())!=-1){
                                             pointList.set(pointList.indexOf(b.block1.getPoint()), new Point(b.block1.getPoint().x,b.block1.getPoint().y+90));
                                         }
                                         b.block1.getPoint().y+=90;
-                                        }else if(layerCount==4){
+                                        }else if(layerCount==4&& b.block1.getPoint().y<470){
                                             if(pointList.indexOf(b.block1.getPoint())!=-1){
                                             pointList.set(pointList.indexOf(b.block1.getPoint()), new Point(b.block1.getPoint().x,b.block1.getPoint().y+120));
                                         }
@@ -339,78 +340,78 @@ public class Board extends javax.swing.JPanel {
                                         
                                         
                                     }
-                                    if(b.block2!=null && b.block2.getPoint().y<570){
+                                    if(b.block2!=null){
                                         
                                         
-                                        if(layerCount==1){
+                                        if(layerCount==1 && b.block2.getPoint().y<570){
                                             if(pointList.indexOf(b.block2.getPoint())!=-1){
                                             pointList.set(pointList.indexOf(b.block2.getPoint()), new Point(b.block2.getPoint().x,b.block2.getPoint().y+30));
                                         }
                                         b.block2.getPoint().y+=30;
                                             
-                                        }else if(layerCount==2){
+                                        }else if(layerCount==2 && b.block2.getPoint().y<540){
                                             if(pointList.indexOf(b.block2.getPoint())!=-1){
                                             pointList.set(pointList.indexOf(b.block2.getPoint()), new Point(b.block2.getPoint().x,b.block2.getPoint().y+60));
                                         }
                                         b.block2.getPoint().y+=60;
-                                        }else if(layerCount==3){
+                                        }else if(layerCount==3 && b.block2.getPoint().y<510){
                                             if(pointList.indexOf(b.block2.getPoint())!=-1){
                                             pointList.set(pointList.indexOf(b.block2.getPoint()), new Point(b.block2.getPoint().x,b.block2.getPoint().y+90));
                                         }
                                         b.block2.getPoint().y+=90;
-                                        }else if(layerCount==4){
+                                        }else if(layerCount==4 && b.block2.getPoint().y<470){
                                             if(pointList.indexOf(b.block2.getPoint())!=-1){
                                             pointList.set(pointList.indexOf(b.block2.getPoint()), new Point(b.block2.getPoint().x,b.block2.getPoint().y+120));
                                         }
                                         b.block2.getPoint().y+=120;
                                         }
                                     }
-                                    if(b.block3!=null && b.block3.getPoint().y<570){
+                                    if(b.block3!=null){
                                         
                                         
-                                        if(layerCount==1){
+                                        if(layerCount==1 && b.block3.getPoint().y<570){
                                             if(pointList.indexOf(b.block3.getPoint())!=-1){
                                             pointList.set(pointList.indexOf(b.block3.getPoint()), new Point(b.block3.getPoint().x,b.block3.getPoint().y+30));
                                         }
                                         b.block3.getPoint().y+=30;
                                             
-                                        }else if(layerCount==2){
+                                        }else if(layerCount==2 && b.block3.getPoint().y<540){
                                             if(pointList.indexOf(b.block3.getPoint())!=-1){
                                             pointList.set(pointList.indexOf(b.block3.getPoint()), new Point(b.block3.getPoint().x,b.block3.getPoint().y+60));
                                         }
                                         b.block3.getPoint().y+=60;
-                                        }else if(layerCount==3){
+                                        }else if(layerCount==3 && b.block3.getPoint().y<510){
                                             if(pointList.indexOf(b.block3.getPoint())!=-1){
                                             pointList.set(pointList.indexOf(b.block3.getPoint()), new Point(b.block3.getPoint().x,b.block3.getPoint().y+90));
                                         }
                                         b.block3.getPoint().y+=90;
-                                        }else if(layerCount==4){
+                                        }else if(layerCount==4 && b.block3.getPoint().y<470){
                                             if(pointList.indexOf(b.block3.getPoint())!=-1){
                                             pointList.set(pointList.indexOf(b.block3.getPoint()), new Point(b.block3.getPoint().x,b.block3.getPoint().y+120));
                                         }
                                         b.block3.getPoint().y+=120;
                                         }
                                     }
-                                    if(b.block4!=null && b.block4.getPoint().y<570){
+                                    if(b.block4!=null){
                                         
                                         
-                                       if(layerCount==1){
+                                       if(layerCount==1 && b.block4.getPoint().y<570){
                                             if(pointList.indexOf(b.block4.getPoint())!=-1){
                                             pointList.set(pointList.indexOf(b.block4.getPoint()), new Point(b.block4.getPoint().x,b.block4.getPoint().y+30));
                                         }
                                         b.block4.getPoint().y+=30;
                                             
-                                        }else if(layerCount==2){
+                                        }else if(layerCount==2 && b.block4.getPoint().y<540){
                                             if(pointList.indexOf(b.block4.getPoint())!=-1){
                                             pointList.set(pointList.indexOf(b.block4.getPoint()), new Point(b.block4.getPoint().x,b.block4.getPoint().y+60));
                                         }
                                         b.block4.getPoint().y+=60;
-                                        }else if(layerCount==3){
+                                        }else if(layerCount==3 && b.block4.getPoint().y<510){
                                             if(pointList.indexOf(b.block4.getPoint())!=-1){
                                             pointList.set(pointList.indexOf(b.block4.getPoint()), new Point(b.block4.getPoint().x,b.block4.getPoint().y+90));
                                         }
                                         b.block4.getPoint().y+=90;
-                                        }else if(layerCount==4){
+                                        }else if(layerCount==4 && b.block4.getPoint().y<470){
                                             if(pointList.indexOf(b.block4.getPoint())!=-1){
                                             pointList.set(pointList.indexOf(b.block4.getPoint()), new Point(b.block4.getPoint().x,b.block4.getPoint().y+120));
                                         }
