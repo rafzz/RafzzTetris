@@ -34,7 +34,8 @@ public class Board extends javax.swing.JPanel {
     }
     
     
-    
+    private static final int boardW=300;
+    private static final int boardH=600;
     private int licz=0;
     private List<Block> blockList= new ArrayList<Block>();
     private List<Point> pointList = new ArrayList<Point>();
@@ -61,41 +62,43 @@ public class Board extends javax.swing.JPanel {
                 
                 while(licz==0){
                     currentBlock = blockList.get(blockList.size()-1);
-                    
-                    if(currentBlock.block1!=null && currentBlock.block1.getPoint().y==570 ||
-                       currentBlock.block2!=null && currentBlock.block2.getPoint().y==570 ||
-                       currentBlock.block3!=null && currentBlock.block3.getPoint().y==570 ||
-                       currentBlock.block4!=null && currentBlock.block4.getPoint().y==570 ){
-
+                                                                                        //570
+                    if(currentBlock.block1!=null && currentBlock.block1.getPoint().y==boardH-Block.mainSize ||
+                       currentBlock.block2!=null && currentBlock.block2.getPoint().y==boardH-Block.mainSize ||
+                       currentBlock.block3!=null && currentBlock.block3.getPoint().y==boardH-Block.mainSize ||
+                       currentBlock.block4!=null && currentBlock.block4.getPoint().y==boardH-Block.mainSize ){
 
                         if(currentBlock.block1!=null){
-                            
-                             
-                                
-                                if(!pointList.contains(new Point(currentBlock.block1.getPoint().x,currentBlock.block1.getPoint().y))){
-                                    //System.out.println("jESTEM!!");
-                                    pointList.add(new Point(currentBlock.block1.getPoint().x,currentBlock.block1.getPoint().y));
+                                                
+                                if(!pointList.contains(new Point(currentBlock.block1.getPoint().x,
+                                        currentBlock.block1.getPoint().y))){
+                                    
+                                    pointList.add(new Point(currentBlock.block1.getPoint().x,
+                                            currentBlock.block1.getPoint().y));
                                 }
-                            
-                            //pointList.add(new Point(currentBlock.block1.getPoint().x,currentBlock.block1.getPoint().y));
+
                         }
                         if(currentBlock.block2!=null){
                             
-                            
-                            if(!pointList.contains(new Point(currentBlock.block2.getPoint().x,currentBlock.block2.getPoint().y))){
-                                pointList.add(new Point(currentBlock.block2.getPoint().x,currentBlock.block2.getPoint().y));
+                            if(!pointList.contains(new Point(currentBlock.block2.getPoint().x,
+                                    currentBlock.block2.getPoint().y))){
+                                
+                                pointList.add(new Point(currentBlock.block2.getPoint().x,
+                                        currentBlock.block2.getPoint().y));
                             }
                         
-                            //pointList.add(new Point(currentBlock.block2.getPoint().x,currentBlock.block2.getPoint().y));
+                            
                         }
                         if(currentBlock.block3!=null){
                             
                             
-                            if(!pointList.contains(new Point(currentBlock.block3.getPoint().x,currentBlock.block3.getPoint().y))){
-                                pointList.add(new Point(currentBlock.block3.getPoint().x,currentBlock.block3.getPoint().y));
+                            if(!pointList.contains(new Point(currentBlock.block3.getPoint().x,
+                                    currentBlock.block3.getPoint().y))){
+                                
+                                pointList.add(new Point(currentBlock.block3.getPoint().x,
+                                        currentBlock.block3.getPoint().y));
                             }
-                        
-                            //pointList.add(new Point(currentBlock.block3.getPoint().x,currentBlock.block3.getPoint().y));
+
                         }
                         if(currentBlock.block4!=null){
                             
@@ -107,8 +110,9 @@ public class Board extends javax.swing.JPanel {
                             //pointList.add(new Point(currentBlock.block4.getPoint().x,currentBlock.block4.getPoint().y));
                         }
 
-                        currentBlock.suspend();
-                        currentBlock.setSuspended(true);
+                        //currentBlock.suspend();
+                        currentBlock.stop();
+                        //currentBlock.setSuspended(true);
                    
 
                     //System.out.println(dc);
@@ -122,7 +126,8 @@ public class Board extends javax.swing.JPanel {
                     
                     currentBlock = blockList.get(blockList.size()-1);
                     //System.out.println("wchodze");
-                    if(currentBlock.isSuspended()){
+                    //if(currentBlock.isSuspended()){
+                    if(!currentBlock.isAlive()){
                         //currentBlock= new Iblock();
                         blockList.add( Block.randBlock());
                         licz=0;
@@ -165,8 +170,9 @@ public class Board extends javax.swing.JPanel {
                         //pointList.add(new Point(currentBlock.block4.getPoint().x,currentBlock.block4.getPoint().y));
                         //currentBlock.block.setIndex(pointList.size()-1);
                     
-                        currentBlock.suspend();
-                        currentBlock.setSuspended(true);
+                        //currentBlock.suspend();
+                        currentBlock.stop();
+                        //currentBlock.setSuspended(true);
 
                         break;
 
@@ -174,24 +180,25 @@ public class Board extends javax.swing.JPanel {
                 }
                 
                 
-                for(int i=0;i<600;i+=30){
+                for(int i=0;i<boardH;i+=Block.mainSize){
                     //System.out.println(i);
                     border=i;
                     count=0;
                     for(Block b : blockList){
-                        if(b.block1!=null && b.block1.getPoint().y==i && b.isSuspended()){
+                        //if(b.block1!=null && b.block1.getPoint().y==i && b.isSuspended()){
+                        if(b.block1!=null && b.block1.getPoint().y==i && !b.isAlive()){
                             count++;
                             //System.out.println(count);
                         }
-                        if(b.block2!=null && b.block2.getPoint().y==i && b.isSuspended()){
+                        if(b.block2!=null && b.block2.getPoint().y==i && !b.isAlive()){
                             count++;
                             //System.out.println(count);
                         }
-                        if(b.block3!=null && b.block3.getPoint().y==i && b.isSuspended()){
+                        if(b.block3!=null && b.block3.getPoint().y==i && !b.isAlive()){
                             count++;
                             //System.out.println(count);
                         }
-                        if(b.block4!=null && b.block4.getPoint().y==i && b.isSuspended()){
+                        if(b.block4!=null && b.block4.getPoint().y==i && !b.isAlive()){
                             count++;
                             //System.out.println(count);
                         }
@@ -204,7 +211,7 @@ public class Board extends javax.swing.JPanel {
                         removePointList.clear();
                         System.out.println(pointList);
                         for(Block b : blockList){
-                            if(b.block1!=null && b.block1.getPoint().y==i && b.isSuspended()){
+                            if(b.block1!=null && b.block1.getPoint().y==i && !b.isAlive()){
                                 
                                 //pointList.remove(b.block1.getPoint());
                                 removePointList.add(b.block1.getPoint());
@@ -213,20 +220,20 @@ public class Board extends javax.swing.JPanel {
                                 //pointList.removeAll(Collections.singleton(b.block1.getPoint()));
                                 b.block1=null;
                             }
-                            if(b.block2!=null && b.block2.getPoint().y==i && b.isSuspended()){
+                            if(b.block2!=null && b.block2.getPoint().y==i && !b.isAlive()){
                                 
                                 //pointList.remove(b.block2.getPoint());
                                 removePointList.add(b.block2.getPoint());
                                 
                                 b.block2=null;
                             }
-                            if(b.block3!=null && b.block3.getPoint().y==i && b.isSuspended()){
+                            if(b.block3!=null && b.block3.getPoint().y==i && !b.isAlive()){
                                 
                                 //pointList.remove(b.block3.getPoint());
                                 removePointList.add(b.block3.getPoint());
                                 b.block3=null;
                             }
-                            if(b.block4!=null && b.block4.getPoint().y==i && b.isSuspended()){
+                            if(b.block4!=null && b.block4.getPoint().y==i && !b.isAlive()){
                                 
                                 //pointList.remove(b.block4.getPoint());
                                 removePointList.add(b.block4.getPoint());
@@ -303,10 +310,10 @@ public class Board extends javax.swing.JPanel {
                 }
                 if(layerCount!=0){
                 for(Block b : blockList){
-                            if(b.isSuspended() && b.block1!=null && b.block1.getPoint().y<border || 
-                                    b.isSuspended() && b.block2!=null && b.block2.getPoint().y<border  || 
-                                    b.isSuspended() && b.block3!=null && b.block3.getPoint().y<border  || 
-                                    b.isSuspended() && b.block4!=null && b.block4.getPoint().y<border ){
+                            if(!b.isAlive() && b.block1!=null && b.block1.getPoint().y<border || 
+                                    !b.isAlive() && b.block2!=null && b.block2.getPoint().y<border  || 
+                                    !b.isAlive() && b.block3!=null && b.block3.getPoint().y<border  || 
+                                    !b.isAlive() && b.block4!=null && b.block4.getPoint().y<border ){
                                     //System.out.println("JESTE!!!");
                                     //b.setSuspended();
                                     
@@ -438,7 +445,7 @@ public class Board extends javax.swing.JPanel {
         initComponents();
         
         
-        boardCenter = this.getWidth()/2;
+        boardCenter = boardW/2;
         blockList.add( Block.randBlock());
         currentBlock = blockList.get(blockList.size()-1);
         
@@ -462,13 +469,14 @@ public class Board extends javax.swing.JPanel {
                     
                     //blockCount++;
                     
-                    g2d.drawOval(p.x, p.y, 30, 30);
-                    //g2d.drawString(String.valueOf(blockCount), p.x+15, p.y+15);
+                    //g2d.drawOval(p.x, p.y, 30, 30);
+                    
+                    //g2d.drawString(String.valueOf(blockCoun), p.x+15, p.y+15);
                     
                 }
                 for(Point p : removePointList){
-                    g2d.drawRect(p.x, p.y, 30, 30);
-                    g2d.drawLine(p.x, p.y, p.x+30, p.y+30);
+                    //g2d.drawRect(p.x, p.y, 30, 30);
+                    //g2d.drawLine(p.x, p.y, p.x+30, p.y+30);
                 }
                 
                
@@ -514,12 +522,12 @@ public class Board extends javax.swing.JPanel {
 
         }
         if(evt.getKeyCode()==KeyEvent.VK_X){
-            if(!currentBlock.isSuspended()){
+            if(currentBlock.isAlive() && !currentBlock.isSuspended()){
                 currentBlock.rotate(evt);
             }
             
         }else if(evt.getKeyCode()==KeyEvent.VK_RIGHT || evt.getKeyCode()==KeyEvent.VK_LEFT || evt.getKeyCode()==KeyEvent.VK_DOWN){
-            if(!currentBlock.isSuspended()){
+            if(currentBlock.isAlive() && !currentBlock.isSuspended()){
                 currentBlock.move(evt);
             }
             

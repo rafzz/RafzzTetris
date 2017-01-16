@@ -26,7 +26,7 @@ import javax.imageio.ImageIO;
  */
 public abstract class Block extends Thread{
     
-    protected static int mainSize=30;
+    protected static final int mainSize=30;
     private int sleepValue=700;
     protected boolean suspended = false;
 
@@ -49,19 +49,23 @@ public abstract class Block extends Thread{
     public void draw(Graphics2D g,ImageObserver io){
         if(block1!=null){
             g.drawImage(block1.getImage(),this.block1.getPoint().x,this.block1.getPoint().y,io);
-            g.drawString(String.valueOf(this.getId()), this.block1.getPoint().x+15, this.block1.getPoint().y+15);
+            g.drawRoundRect(this.block1.getPoint().x,this.block1.getPoint().y,30 , 30, 15, 15);
+            //g.drawString(String.valueOf(this.getId()), this.block1.getPoint().x+15, this.block1.getPoint().y+15);
         }
         if(block2!=null){
             g.drawImage(block2.getImage(),this.block2.getPoint().x,this.block2.getPoint().y,io);
-            g.drawString(String.valueOf(this.getId()), this.block2.getPoint().x+15, this.block2.getPoint().y+15);
+            g.drawRoundRect(this.block2.getPoint().x,this.block2.getPoint().y,30 , 30, 15, 15);
+            //g.drawString(String.valueOf(this.getId()), this.block2.getPoint().x+15, this.block2.getPoint().y+15);
         }
         if(block3!=null){
             g.drawImage(block3.getImage(),this.block3.getPoint().x,this.block3.getPoint().y,io);
-            g.drawString(String.valueOf(this.getId()), this.block3.getPoint().x+15, this.block3.getPoint().y+15);
+            g.drawRoundRect(this.block3.getPoint().x,this.block3.getPoint().y,30 , 30, 15, 15);
+            //g.drawString(String.valueOf(this.getId()), this.block3.getPoint().x+15, this.block3.getPoint().y+15);
         }
         if(block4!=null){
             g.drawImage(block4.getImage(),this.block4.getPoint().x,this.block4.getPoint().y,io);
-            g.drawString(String.valueOf(this.getId()), this.block4.getPoint().x+15, this.block4.getPoint().y+15);
+            g.drawRoundRect(this.block4.getPoint().x,this.block4.getPoint().y,30 , 30, 15, 15);
+            //g.drawString(String.valueOf(this.getId()), this.block4.getPoint().x+15, this.block4.getPoint().y+15);
         }
         
         
@@ -73,21 +77,29 @@ public abstract class Block extends Thread{
                 
                 
             case KeyEvent.VK_RIGHT: 
-                //if(block1.getPoint().x!=300-mainSize && block2.getPoint().x!=300-mainSize && block3.getPoint().x!=300-mainSize && block4.getPoint().x!=300-mainSize){
+                if(block1.getPoint().x!=300-mainSize && 
+                        block2.getPoint().x!=300-mainSize && 
+                        block3.getPoint().x!=300-mainSize && 
+                        block4.getPoint().x!=300-mainSize){
                     block1.getPoint().x+=30;
                     block2.getPoint().x+=30;
                     block3.getPoint().x+=30;
                     block4.getPoint().x+=30;
-                //}
+                }
                 
 
                 break;
-            
             case KeyEvent.VK_LEFT: 
-                block1.getPoint().x-=30;
-                block2.getPoint().x-=30;
-                block3.getPoint().x-=30;
-                block4.getPoint().x-=30;
+                if(block1.getPoint().x!=0 && 
+                            block2.getPoint().x!=0 && 
+                            block3.getPoint().x!=0 && 
+                            block4.getPoint().x!=0){
+
+                    block1.getPoint().x-=30;
+                    block2.getPoint().x-=30;
+                    block3.getPoint().x-=30;
+                    block4.getPoint().x-=30;
+                }
                 break;
                 
             case KeyEvent.VK_DOWN: 
