@@ -27,48 +27,72 @@ import javax.imageio.ImageIO;
 public abstract class Block extends Thread{
     
     protected static final int mainSize=30;
-    private int sleepValue=700; //300 
-    protected boolean suspended = false;
-    private static final int arcSize=15;
-    private static final int randRange=7; //zalezy od ilosci klockow
     
+    private static int gameSpeed=700; //300 
 
-    public boolean isSuspended() {
-        return suspended;
-    }
+    public static int getGameSpeed() { return gameSpeed; }
 
-    public void setSuspended(boolean suspended) {
-        this.suspended = suspended;
-    }
+    public static void setGameSpeed(int gameSpeed) { Block.gameSpeed = gameSpeed; }
+    
+    protected boolean suspended = false;
+    
+    private static final int arcSize=15;
+    
+    private static final int randRange=7; //zalezy od ilosci klockow
+
+    public boolean isSuspended() { return suspended; }
+
+    public void setSuspended(boolean suspended) { this.suspended = suspended; }
     
     protected AtomBlock block1;
+    
     protected AtomBlock block2;
+    
     protected AtomBlock block3;
+    
     protected AtomBlock block4;
     
     public void rotate(java.awt.event.KeyEvent evt){}
+    
+    public void drawPreview(Graphics2D g,ImageObserver io){
+        if(block1!=null){
+            g.drawImage(block1.getImage(),this.block1.getPoint().x-mainSize*2,this.block1.getPoint().y+mainSize*2,io);
+            g.drawRoundRect(this.block1.getPoint().x-mainSize*2,this.block1.getPoint().y+mainSize*2,mainSize , mainSize, arcSize, arcSize);
+        }
+        if(block2!=null){
+            g.drawImage(block2.getImage(),this.block2.getPoint().x-mainSize*2,this.block2.getPoint().y+mainSize*2,io);
+            g.drawRoundRect(this.block2.getPoint().x-mainSize*2,this.block2.getPoint().y+mainSize*2,mainSize , mainSize, arcSize, arcSize);
+        }
+        if(block3!=null){
+            g.drawImage(block3.getImage(),this.block3.getPoint().x-mainSize*2,this.block3.getPoint().y+mainSize*2,io);
+            g.drawRoundRect(this.block3.getPoint().x-mainSize*2,this.block3.getPoint().y+mainSize*2,mainSize , mainSize, arcSize, arcSize);
+        }
+        if(block4!=null){
+            g.drawImage(block4.getImage(),this.block4.getPoint().x-mainSize*2,this.block4.getPoint().y+mainSize*2,io);
+            g.drawRoundRect(this.block4.getPoint().x-mainSize*2,this.block4.getPoint().y+mainSize*2,mainSize , mainSize, arcSize, arcSize);
+        }
+        
+        
+            
+    }
     
     
     public void draw(Graphics2D g,ImageObserver io){
         if(block1!=null){
             g.drawImage(block1.getImage(),this.block1.getPoint().x,this.block1.getPoint().y,io);
             g.drawRoundRect(this.block1.getPoint().x,this.block1.getPoint().y,mainSize , mainSize, arcSize, arcSize);
-            //g.drawString(String.valueOf(this.getId()), this.block1.getPoint().x+15, this.block1.getPoint().y+15);
         }
         if(block2!=null){
             g.drawImage(block2.getImage(),this.block2.getPoint().x,this.block2.getPoint().y,io);
             g.drawRoundRect(this.block2.getPoint().x,this.block2.getPoint().y,mainSize , mainSize, arcSize, arcSize);
-            //g.drawString(String.valueOf(this.getId()), this.block2.getPoint().x+15, this.block2.getPoint().y+15);
         }
         if(block3!=null){
             g.drawImage(block3.getImage(),this.block3.getPoint().x,this.block3.getPoint().y,io);
             g.drawRoundRect(this.block3.getPoint().x,this.block3.getPoint().y,mainSize , mainSize, arcSize, arcSize);
-            //g.drawString(String.valueOf(this.getId()), this.block3.getPoint().x+15, this.block3.getPoint().y+15);
         }
         if(block4!=null){
             g.drawImage(block4.getImage(),this.block4.getPoint().x,this.block4.getPoint().y,io);
             g.drawRoundRect(this.block4.getPoint().x,this.block4.getPoint().y,mainSize , mainSize, arcSize, arcSize);
-            //g.drawString(String.valueOf(this.getId()), this.block4.getPoint().x+15, this.block4.getPoint().y+15);
         }
         
         
@@ -117,7 +141,6 @@ public abstract class Block extends Thread{
     
     public static Block randBlock(){
         Random rand = new Random(); 
-        //int randInt= rand.nextInt(1);
         
         switch(rand.nextInt(randRange)){
             case 0:
@@ -164,10 +187,12 @@ public abstract class Block extends Thread{
             block3.getPoint().y+=mainSize;
             block4.getPoint().y+=mainSize;
             try {
-                sleep(sleepValue);
+                sleep(gameSpeed);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Block.class.getName()).log(Level.SEVERE, null, ex);
-            }  
+            }
+            
+             
         }  
     }
     

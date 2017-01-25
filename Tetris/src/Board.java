@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 /*
@@ -28,398 +30,140 @@ public class Board extends javax.swing.JPanel {
     /**
      * Creates new form Board
      */
+
+    private static  int boardW=300;  //musi byc 10 na 20 300/600
     
+    private static  int boardH=600;
     
-    private static  int boardCenter;
-    public static int getBoardCenter() { return boardCenter; }
-    
-    private static final int boardW=180;  //musi byc 10 na 20 300/600
-    private static final int boardH=600;
     private static final int widthBlockCount=boardW/Block.mainSize;
     
-    private static final int gameSpeed =10; //20
+    private static  int boardCenter = boardW/2;
+    
+    private static final int refreshSpeed =10; //20
 
     public static int getBoardW() { return boardW; }
+    
     public static int getBoardH() { return boardH; }
     
+    public static int getBoardCenter() { return boardCenter; }
     
-    //private int licz=0;
+    public static int getWidthBlockCount() { return widthBlockCount; }
+    
+    private Timer timer;
+    
+    public void restart(){
+        
+        this.setFocusable(true);
+        this.setVisible(true);
+        blockList.clear();
+        pointList.clear();
+        boardCenter = boardW/2;
+        blockList.add( Block.randBlock());
+        GameMechanic.setNextBlock(Block.randBlock());
+        GameMechanic.getNextBlock().suspend();               
+        Prewiev.block=GameMechanic.getNextBlock();
+        currentBlock = blockList.get(blockList.size()-1);
+        blockList.get(blockList.size()-1).suspend();
+        currentBlock.setSuspended(true);
+        removePointList.clear();
+        removeCount=0;
+        layerCount=0;
+        GameMechanic.setScore(0);
+        timer = new Timer(refreshSpeed, actionListener);
+        timer.start();
+        
+    }
+    
+    public void stop(){
+        restart();
+        Window.getPauseLabel().setText("<html>GAME OVER!<br>Your score: "+Window.getScoreLabel().getText()+"</html>");
+        
+    }
+    
     private List<Block> blockList= new ArrayList<Block>();
-    private List<Point> pointList = new ArrayList<Point>();
-    private Block currentBlock; 
     
-    private int border;
+    private List<Point> pointList = new ArrayList<Point>();
+    
+    private static Block currentBlock; 
+
+    public static Block getCurrentBlock() { return currentBlock; }
+
+    public static void setCurrentBlock(Block currentBlock) { Board.currentBlock = currentBlock; }
     
     private List<Point> removePointList = new ArrayList<Point>();
     
-    int count=0;
-    private int layerCount=0;
+    private int removeCount=0;
+    
+    private static int  layerCount=0;
+
+    public static void setLayerCount(int layerCount) { Board.layerCount = layerCount; }
+    
+    public static int getLayerCount() { return layerCount; }
+
+    private ActionListener actionListener;
+    
+    
+   
+    
     
     public Board() {
+       
         this.setFocusable(true);
-        //this.setSize(Board.getBoardW(), Board.getBoardH());
-        //this.setLayout(new FlowLayout());
-        
-        //this.setPreferredSize(new Dimension(Board.getBoardW(), Board.getBoardH()));
         this.setVisible(true);
-        
-        
-        
-        
-        
-        //System.out.println(dc);
-        ActionListener actionListener = new ActionListener() {
+
+        actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
+                
                 repaint();
                 
+                Window.getBoard1().requestFocus(true);
                 
-                //while(licz==0){
-                while(true){
-                    currentBlock = blockList.get(blockList.size()-1);
-                                                                                        //570
-                    if(currentBlock.block1!=null && currentBlock.block1.getPoint().y==boardH-Block.mainSize ||
-                       currentBlock.block2!=null && currentBlock.block2.getPoint().y==boardH-Block.mainSize ||
-                       currentBlock.block3!=null && currentBlock.block3.getPoint().y==boardH-Block.mainSize ||
-                       currentBlock.block4!=null && currentBlock.block4.getPoint().y==boardH-Block.mainSize ){
-
-                        if(currentBlock.block1!=null){
-                                                
-                                if(!pointList.contains(new Point(currentBlock.block1.getPoint().x,
-                                        currentBlock.block1.getPoint().y))){
-                                    
-                                    pointList.add(new Point(currentBlock.block1.getPoint().x,
-                                            currentBlock.block1.getPoint().y));
-                                }
-
-                        }
-                        if(currentBlock.block2!=null){
-                            
-                            if(!pointList.contains(new Point(currentBlock.block2.getPoint().x,
-                                    currentBlock.block2.getPoint().y))){
-                                
-                                pointList.add(new Point(currentBlock.block2.getPoint().x,
-                                        currentBlock.block2.getPoint().y));
-                            }
-                        
-                            
-                        }
-                        if(currentBlock.block3!=null){
-                            
-                            
-                            if(!pointList.contains(new Point(currentBlock.block3.getPoint().x,
-                                    currentBlock.block3.getPoint().y))){
-                                
-                                pointList.add(new Point(currentBlock.block3.getPoint().x,
-                                        currentBlock.block3.getPoint().y));
-                            }
-
-                        }
-                        if(currentBlock.block4!=null){
-                            
-                            
-                            if(!pointList.contains(new Point(currentBlock.block4.getPoint().x,currentBlock.block4.getPoint().y))){
-                                pointList.add(new Point(currentBlock.block4.getPoint().x,currentBlock.block4.getPoint().y));
-                            }
-                        
-                            //pointList.add(new Point(currentBlock.block4.getPoint().x,currentBlock.block4.getPoint().y));
-                        }
-
-                        //currentBlock.suspend();
-                        currentBlock.stop();
-                        //currentBlock.setSuspended(true);
-                   
-
-                    //System.out.println(dc);
-                }
-                break;
-                }
+                if(GameMechanic.gameOver(pointList)){ stop(); }
                 
-                
-                
-                for( Point p : pointList){
-                    
-                    currentBlock = blockList.get(blockList.size()-1);
-                    //System.out.println("wchodze");
-                    //if(currentBlock.isSuspended()){
-                    if(!currentBlock.isAlive()){
-                        //currentBlock= new Iblock();
-                        blockList.add( Block.randBlock());
-                        //licz=0;
- 
-                    }
-                    
-                    if( currentBlock.block1!=null && p.y==currentBlock.block1.getPoint().y+30 && p.x==currentBlock.block1.getPoint().x || 
-                            currentBlock.block2!=null && p.y==currentBlock.block2.getPoint().y+30 && p.x==currentBlock.block2.getPoint().x || 
-                            currentBlock.block3!=null && p.y==currentBlock.block3.getPoint().y+30 && p.x==currentBlock.block3.getPoint().x || 
-                            currentBlock.block4!=null && p.y==currentBlock.block4.getPoint().y+30 && p.x==currentBlock.block4.getPoint().x){
+                GameMechanic.addBlockToBottom( currentBlock,  blockList,  pointList);
 
-                        
-                        
-                        
-                            if(currentBlock.block1!=null && !pointList.contains(new Point(currentBlock.block1.getPoint().x,currentBlock.block1.getPoint().y))){
-                                pointList.add(new Point(currentBlock.block1.getPoint().x,currentBlock.block1.getPoint().y));
-                            }
-                        
-                        //pointList.add(new Point(currentBlock.block1.getPoint().x,currentBlock.block1.getPoint().y));
-                        
-                        
-                            if(currentBlock.block2!=null && !pointList.contains(new Point(currentBlock.block2.getPoint().x,currentBlock.block2.getPoint().y))){
-                                pointList.add(new Point(currentBlock.block2.getPoint().x,currentBlock.block2.getPoint().y));
-                            }
-                        
-                        //pointList.add(new Point(currentBlock.block2.getPoint().x,currentBlock.block2.getPoint().y));
-                        
-                        
-                            if(currentBlock.block3!=null && !pointList.contains(new Point(currentBlock.block3.getPoint().x,currentBlock.block3.getPoint().y))){
-                                pointList.add(new Point(currentBlock.block3.getPoint().x,currentBlock.block3.getPoint().y));
-                            }
-                        
-                        //pointList.add(new Point(currentBlock.block3.getPoint().x,currentBlock.block3.getPoint().y));
-                        
-                        
-                            if(currentBlock.block4!=null && !pointList.contains(new Point(currentBlock.block4.getPoint().x,currentBlock.block4.getPoint().y))){
-                                pointList.add(new Point(currentBlock.block4.getPoint().x,currentBlock.block4.getPoint().y));
-                            }
-                        
-                        //pointList.add(new Point(currentBlock.block4.getPoint().x,currentBlock.block4.getPoint().y));
-                        //currentBlock.block.setIndex(pointList.size()-1);
-                    
-                        //currentBlock.suspend();
-                        currentBlock.stop();
-                        //currentBlock.setSuspended(true);
+                GameMechanic.addBlockToStack( currentBlock,  blockList,  pointList);
 
-                        break;
+                GameMechanic.removeLayer(removeCount,  layerCount, blockList,  pointList,  removePointList);
 
-                    }
-                }
-                
-                
-                for(int i=0;i<boardH;i+=Block.mainSize){
-                    //System.out.println(i);
-                    border=i;
-                    count=0;
-                    for(Block b : blockList){
-                        //if(b.block1!=null && b.block1.getPoint().y==i && b.isSuspended()){
-                        if(b.block1!=null && b.block1.getPoint().y==i && !b.isAlive()){
-                            count++;
-                            //System.out.println(count);
-                        }
-                        if(b.block2!=null && b.block2.getPoint().y==i && !b.isAlive()){
-                            count++;
-                            //System.out.println(count);
-                        }
-                        if(b.block3!=null && b.block3.getPoint().y==i && !b.isAlive()){
-                            count++;
-                            //System.out.println(count);
-                        }
-                        if(b.block4!=null && b.block4.getPoint().y==i && !b.isAlive()){
-                            count++;
-                            //System.out.println(count);
-                        }
-                    
-                    }
-                    
-                    
-                    if(count==widthBlockCount){
-                        layerCount++;
-                        removePointList.clear();
-                        System.out.println(pointList);
-                        for(Block b : blockList){
-                            if(b.block1!=null && b.block1.getPoint().y==i && !b.isAlive()){
-                                
-                                //pointList.remove(b.block1.getPoint());
-                                removePointList.add(b.block1.getPoint());
-                                
-                                
-                                //pointList.removeAll(Collections.singleton(b.block1.getPoint()));
-                                b.block1=null;
-                            }
-                            if(b.block2!=null && b.block2.getPoint().y==i && !b.isAlive()){
-                                
-                                //pointList.remove(b.block2.getPoint());
-                                removePointList.add(b.block2.getPoint());
-                                
-                                b.block2=null;
-                            }
-                            if(b.block3!=null && b.block3.getPoint().y==i && !b.isAlive()){
-                                
-                                //pointList.remove(b.block3.getPoint());
-                                removePointList.add(b.block3.getPoint());
-                                b.block3=null;
-                            }
-                            if(b.block4!=null && b.block4.getPoint().y==i && !b.isAlive()){
-                                
-                                //pointList.remove(b.block4.getPoint());
-                                removePointList.add(b.block4.getPoint());
-                                b.block4=null;
+                GameMechanic.moveLayer(layerCount, blockList, pointList, removePointList);
 
-                            }
-                            //System.out.println(pointList);
-
-                        }
-                        pointList.removeAll(removePointList);
-                        
-                        
-                        
-                    }
-                    
-                    
-                    
-                    
-                
-            
-                }
-                if(layerCount!=0){
-                for(Block b : blockList){
-                            if(!b.isAlive() && b.block1!=null && b.block1.getPoint().y<border || 
-                                    !b.isAlive() && b.block2!=null && b.block2.getPoint().y<border  || 
-                                    !b.isAlive() && b.block3!=null && b.block3.getPoint().y<border  || 
-                                    !b.isAlive() && b.block4!=null && b.block4.getPoint().y<border ){
-                                    //System.out.println("JESTE!!!");
-                                    //b.setSuspended();
-                                    
-                                    if(b.block1!=null ){
-                                        
-                                        if(layerCount==1&& b.block1.getPoint().y<boardH-Block.mainSize){
-                                            if(pointList.indexOf(b.block1.getPoint())!=-1){
-                                            pointList.set(pointList.indexOf(b.block1.getPoint()), 
-                                                    new Point(b.block1.getPoint().x,b.block1.getPoint().y+Block.mainSize));
-                                        }
-                                        b.block1.getPoint().y+=Block.mainSize;
-                                            
-                                        }else if(layerCount==2&& b.block1.getPoint().y<boardH-Block.mainSize*2){
-                                            if(pointList.indexOf(b.block1.getPoint())!=-1){
-                                            pointList.set(pointList.indexOf(b.block1.getPoint()), new Point(b.block1.getPoint().x,b.block1.getPoint().y+Block.mainSize*2));
-                                        }
-                                        b.block1.getPoint().y+=Block.mainSize*2;
-                                        
-                                        }else if(layerCount==3&& b.block1.getPoint().y<boardH-Block.mainSize*3){
-                                            if(pointList.indexOf(b.block1.getPoint())!=-1){
-                                            pointList.set(pointList.indexOf(b.block1.getPoint()), new Point(b.block1.getPoint().x,b.block1.getPoint().y+Block.mainSize*3));
-                                        }
-                                        b.block1.getPoint().y+=Block.mainSize*3;
-                                        }else if(layerCount==4&& b.block1.getPoint().y<boardH-Block.mainSize*4){
-                                            if(pointList.indexOf(b.block1.getPoint())!=-1){
-                                            pointList.set(pointList.indexOf(b.block1.getPoint()), new Point(b.block1.getPoint().x,b.block1.getPoint().y+Block.mainSize*4));
-                                        }
-                                        b.block1.getPoint().y+=Block.mainSize*4;
-                                        }
-                                        
-                                            
-                                        
-                                        
-                                    }
-                                    if(b.block2!=null){
-                                        
-                                        
-                                        if(layerCount==1 && b.block2.getPoint().y<boardH-Block.mainSize){
-                                            if(pointList.indexOf(b.block2.getPoint())!=-1){
-                                            pointList.set(pointList.indexOf(b.block2.getPoint()), new Point(b.block2.getPoint().x,b.block2.getPoint().y+Block.mainSize));
-                                        }
-                                        b.block2.getPoint().y+=Block.mainSize;
-                                            
-                                        }else if(layerCount==2 && b.block2.getPoint().y<boardH-Block.mainSize*2){
-                                            if(pointList.indexOf(b.block2.getPoint())!=-1){
-                                            pointList.set(pointList.indexOf(b.block2.getPoint()), new Point(b.block2.getPoint().x,b.block2.getPoint().y+Block.mainSize*2));
-                                        }
-                                        b.block2.getPoint().y+=Block.mainSize*2;
-                                        }else if(layerCount==3 && b.block2.getPoint().y<boardH-Block.mainSize*3){
-                                            if(pointList.indexOf(b.block2.getPoint())!=-1){
-                                            pointList.set(pointList.indexOf(b.block2.getPoint()), new Point(b.block2.getPoint().x,b.block2.getPoint().y+Block.mainSize*3));
-                                        }
-                                        b.block2.getPoint().y+=Block.mainSize*3;
-                                        }else if(layerCount==4 && b.block2.getPoint().y<boardH-Block.mainSize*4){
-                                            if(pointList.indexOf(b.block2.getPoint())!=-1){
-                                            pointList.set(pointList.indexOf(b.block2.getPoint()), new Point(b.block2.getPoint().x,b.block2.getPoint().y+Block.mainSize*4));
-                                        }
-                                        b.block2.getPoint().y+=Block.mainSize*4;
-                                        }
-                                    }
-                                    if(b.block3!=null){
-                                        
-                                        
-                                        if(layerCount==1 && b.block3.getPoint().y<boardH-Block.mainSize){
-                                            if(pointList.indexOf(b.block3.getPoint())!=-1){
-                                            pointList.set(pointList.indexOf(b.block3.getPoint()), new Point(b.block3.getPoint().x,b.block3.getPoint().y+Block.mainSize));
-                                        }
-                                        b.block3.getPoint().y+=Block.mainSize;
-                                            
-                                        }else if(layerCount==2 && b.block3.getPoint().y<boardH-Block.mainSize*2){
-                                            if(pointList.indexOf(b.block3.getPoint())!=-1){
-                                            pointList.set(pointList.indexOf(b.block3.getPoint()), new Point(b.block3.getPoint().x,b.block3.getPoint().y+Block.mainSize*2));
-                                        }
-                                        b.block3.getPoint().y+=Block.mainSize*2;
-                                        }else if(layerCount==3 && b.block3.getPoint().y<boardH-Block.mainSize*3){
-                                            if(pointList.indexOf(b.block3.getPoint())!=-1){
-                                            pointList.set(pointList.indexOf(b.block3.getPoint()), new Point(b.block3.getPoint().x,b.block3.getPoint().y+Block.mainSize*3));
-                                        }
-                                        b.block3.getPoint().y+=Block.mainSize*3;
-                                        }else if(layerCount==4 && b.block3.getPoint().y<boardH-Block.mainSize*4){
-                                            if(pointList.indexOf(b.block3.getPoint())!=-1){
-                                            pointList.set(pointList.indexOf(b.block3.getPoint()), new Point(b.block3.getPoint().x,b.block3.getPoint().y+Block.mainSize*4));
-                                        }
-                                        b.block3.getPoint().y+=Block.mainSize*4;
-                                        }
-                                    }
-                                    if(b.block4!=null){
-                                        
-                                        
-                                       if(layerCount==1 && b.block4.getPoint().y<boardH-Block.mainSize){
-                                            if(pointList.indexOf(b.block4.getPoint())!=-1){
-                                            pointList.set(pointList.indexOf(b.block4.getPoint()), new Point(b.block4.getPoint().x,b.block4.getPoint().y+Block.mainSize));
-                                        }
-                                        b.block4.getPoint().y+=Block.mainSize;
-                                            
-                                        }else if(layerCount==2 && b.block4.getPoint().y<boardH-Block.mainSize*2){
-                                            if(pointList.indexOf(b.block4.getPoint())!=-1){
-                                            pointList.set(pointList.indexOf(b.block4.getPoint()), new Point(b.block4.getPoint().x,b.block4.getPoint().y+Block.mainSize*2));
-                                        }
-                                        b.block4.getPoint().y+=Block.mainSize*2;
-                                        }else if(layerCount==3 && b.block4.getPoint().y<boardH-Block.mainSize*3){
-                                            if(pointList.indexOf(b.block4.getPoint())!=-1){
-                                            pointList.set(pointList.indexOf(b.block4.getPoint()), new Point(b.block4.getPoint().x,b.block4.getPoint().y+Block.mainSize*3));
-                                        }
-                                        b.block4.getPoint().y+=Block.mainSize*3;
-                                        }else if(layerCount==4 && b.block4.getPoint().y<boardH-Block.mainSize*4){
-                                            if(pointList.indexOf(b.block4.getPoint())!=-1){
-                                            pointList.set(pointList.indexOf(b.block4.getPoint()), new Point(b.block4.getPoint().x,b.block4.getPoint().y+Block.mainSize*4));
-                                        }
-                                        b.block4.getPoint().y+=Block.mainSize*4;
-                                        }
-                                    }  
-                                            
-                            }
-                           
-                        }layerCount=0;
-                    }
+                GameMechanic.verticalBorders(currentBlock);
+   
+              
             }
+            
         };
-        Timer timer = new Timer(gameSpeed, actionListener);
+        
+        timer = new Timer(refreshSpeed, actionListener);
         timer.start();
-        
         initComponents();
-        
-        
         boardCenter = boardW/2;
         blockList.add( Block.randBlock());
+        GameMechanic.setNextBlock(Block.randBlock());
+        GameMechanic.getNextBlock().suspend();                
+        Prewiev.block=GameMechanic.getNextBlock();
         currentBlock = blockList.get(blockList.size()-1);
+        blockList.get(blockList.size()-1).suspend();
+        currentBlock.setSuspended(true);
         
     }
     
     
     
     
+    
     @Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		Graphics2D g2d = (Graphics2D) g;
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+	Graphics2D g2d = (Graphics2D) g;
                 
-                for(Block b : blockList){
-                    if(b!=null){
-                        b.draw(g2d,this);
-                    } 
-                }  
-	}
+        for(Block b : blockList){
+            if(b!=null){
+                b.draw(g2d,this);
+            } 
+        }
+    }
     
     
     @SuppressWarnings("unchecked")
@@ -445,16 +189,41 @@ public class Board extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_T){
-                blockList.get(0).suspend();
-                currentBlock.setSuspended(true);
-        }
-        if(evt.getKeyCode()==KeyEvent.VK_R){
-                blockList.get(0).resume();
+        
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            
+                blockList.get(blockList.size()-1).resume();
                 currentBlock.setSuspended(false);
+                Window.getPauseLabel().setText("");
+        }
+                
+        if(evt.getKeyCode()==KeyEvent.VK_ESCAPE){
+
+            if(currentBlock.isSuspended()){
+                blockList.get(blockList.size()-1).resume();
+                currentBlock.setSuspended(false);
+                Window.getPauseLabel().setText("");
+                
+            }else{
+                blockList.get(blockList.size()-1).suspend();
+                currentBlock.setSuspended(true);
+                Window.getPauseLabel().setText("Pause!");
+
+                
+            }
+            
+            
+        }
+                
+                
+
+        
+        if(evt.getKeyCode()==KeyEvent.VK_Q){
+            restart();
 
         }
         if(evt.getKeyCode()==KeyEvent.VK_X){
+            
             if(currentBlock.isAlive() && !currentBlock.isSuspended()){
                 currentBlock.rotate(evt);
             }
@@ -462,6 +231,7 @@ public class Board extends javax.swing.JPanel {
         }else if(evt.getKeyCode()==KeyEvent.VK_RIGHT || evt.getKeyCode()==KeyEvent.VK_LEFT || evt.getKeyCode()==KeyEvent.VK_DOWN){
             if(currentBlock.isAlive() && !currentBlock.isSuspended()){
                 currentBlock.move(evt);
+                
             }
             
         }

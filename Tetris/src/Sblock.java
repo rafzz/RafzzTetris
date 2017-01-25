@@ -48,6 +48,7 @@ public class Sblock extends Block{
             
             
         }else if(state2){
+            
             switch(evt.getKeyCode()){
             case KeyEvent.VK_X:
                 block2.getPoint().y=block2.getPoint().y+mainSize;
@@ -65,5 +66,6 @@ public class Sblock extends Block{
         
         
     }
+
     
 }
